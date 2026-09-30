@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+backend/outputs/
+node_modules/
+.expo/
+*.apk
+backend/video-renderer/node_modules/
+backend/video-renderer/build/
+backend/video-renderer/.bundle-cache/
+*.log

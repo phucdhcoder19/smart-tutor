@@ -1,0 +1,12 @@
+fastapi==0.115.*
+uvicorn[standard]==0.32.*
+python-multipart
+python-dotenv
+pydantic>=2
+google-genai
+pymupdf
+python-docx
+moviepy>=2.1
+playwright
+edge-tts
+jinja2

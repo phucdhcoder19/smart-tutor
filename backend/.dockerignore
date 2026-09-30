@@ -1,0 +1,7 @@
+.venv
+.env
+outputs
+__pycache__
+video-renderer/node_modules
+video-renderer/build
+video-renderer/.bundle-cache
