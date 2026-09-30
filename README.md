@@ -46,7 +46,7 @@ It works for any topic (technology, business, science, hobbies…) and any of th
 
 ### Generation pipeline
 
-_Image version: [docs/pipeline.png](docs/pipeline.png)._
+_Image versions: [docs/pipeline.png](docs/pipeline.png) · slide-style [docs/main-flow.png](docs/main-flow.png)._
 
 ```mermaid
 flowchart TD

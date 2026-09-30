@@ -1,0 +1,165 @@
+<!doctype html>
+<!-- Source of docs/main-flow.png (slide-style main flow). Re-render with Playwright at 2x after editing. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1600px; height: 900px; font-family: 'Poppins', 'Segoe UI', sans-serif; }
+  #slide {
+    position: relative; width: 1600px; height: 900px; overflow: hidden; color: #fff;
+    background: linear-gradient(180deg, #0A2A7A 0%, #1456C8 55%, #1E9BF0 100%);
+  }
+  .brand { position: absolute; top: 26px; left: 60px; font-size: 18px; font-weight: 800; letter-spacing: .5px; color: #FFC845; }
+  h1 { position: absolute; top: 58px; left: 60px; font-size: 52px; font-weight: 800; letter-spacing: -.5px; }
+
+  .node { position: absolute; width: 240px; margin-left: -120px; text-align: center; }
+  .tile {
+    width: 96px; height: 96px; margin: 0 auto; border-radius: 20px; background: #FBF3DC;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0, 20, 70, .25);
+  }
+  .tile svg { width: 52px; height: 52px; stroke: #141414; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .node .name { margin-top: 12px; font-size: 17px; font-weight: 600; }
+  .node .sub { margin-top: 3px; font-size: 13.5px; line-height: 1.4; color: rgba(255, 255, 255, .85); }
+
+  .label { position: absolute; font-size: 14px; font-weight: 600; text-align: center; line-height: 1.3; transform: translateX(-50%); white-space: nowrap; }
+
+  .parallel {
+    position: absolute; left: 600px; top: 395px; width: 470px; height: 190px;
+    border: 2px dashed #0F2B66; border-radius: 6px; background: #D6E6FA; color: #0F2B66;
+  }
+  .parallel .head { margin-top: 12px; text-align: center; font-size: 17px; font-weight: 800; letter-spacing: .3px; }
+  .parallel .items { display: flex; justify-content: space-around; margin-top: 12px; }
+  .parallel .item { width: 140px; text-align: center; }
+  .parallel .tile { width: 70px; height: 70px; border-radius: 14px; box-shadow: none; }
+  .parallel .tile svg { width: 38px; height: 38px; }
+  .parallel .name { margin-top: 8px; font-size: 15px; font-weight: 600; }
+  .parallel .sub { font-size: 12px; color: #33486E; }
+</style>
+</head>
+<body>
+<div id="slide">
+  <div class="brand">SmartTutor</div>
+  <h1>Main Flow: From Document to Training</h1>
+
+  <!-- Row 1: left to right -->
+  <div class="node" style="left:170px; top:185px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></div>
+    <div class="name">Trainer / HR</div>
+    <div class="sub">has a policy, guide or manual</div>
+  </div>
+  <div class="node" style="left:560px; top:185px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></div>
+    <div class="name">Mobile App</div>
+    <div class="sub">picks the file · polls status every 3 s</div>
+  </div>
+  <div class="node" style="left:950px; top:185px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></svg></div>
+    <div class="name">FastAPI Backend</div>
+    <div class="sub">validates · returns 202 + task_id</div>
+  </div>
+  <div class="node" style="left:1340px; top:185px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+    <div class="name">Read Document</div>
+    <div class="sub">PDF sent natively · DOCX/TXT as text</div>
+  </div>
+
+  <!-- Row 2: right to left -->
+  <div class="node" style="left:1340px; top:420px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></div>
+    <div class="name">Gemini Course Plan</div>
+    <div class="sub">one structured call → JSON<br>scenes · beats · infographic</div>
+  </div>
+
+  <div class="parallel">
+    <div class="head">MEDIA IN PARALLEL</div>
+    <div class="items">
+      <div class="item">
+        <div class="tile"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg></div>
+        <div class="name">Narration</div>
+        <div class="sub">Gemini TTS → Edge TTS</div>
+      </div>
+      <div class="item">
+        <div class="tile"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg></div>
+        <div class="name">Footage</div>
+        <div class="sub">Pexels video per beat</div>
+      </div>
+      <div class="item">
+        <div class="tile"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div>
+        <div class="name">Photos</div>
+        <div class="sub">Pexels for infographic</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node" style="left:260px; top:420px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+    <div class="name">Timeline</div>
+    <div class="sub">real audio lengths<br>fit the 5-minute limit</div>
+  </div>
+
+  <!-- Row 3: left to right -->
+  <div class="node" style="left:260px; top:670px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+    <div class="name">Render Infographic</div>
+    <div class="sub">Jinja2 template → Playwright PNG</div>
+  </div>
+  <div class="node" style="left:650px; top:670px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg></div>
+    <div class="name">Render Video</div>
+    <div class="sub">Remotion → MP4 · MoviePy fallback</div>
+  </div>
+  <div class="node" style="left:1040px; top:670px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg></div>
+    <div class="name">Save Results</div>
+    <div class="sub">outputs/task_id/<br>video.mp4 · infographic.png</div>
+  </div>
+  <div class="node" style="left:1400px; top:670px;">
+    <div class="tile"><svg viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div>
+    <div class="name">Employees Learn</div>
+    <div class="sub">watch · save · share in the app</div>
+  </div>
+
+  <!-- Arrows -->
+  <svg style="position:absolute; left:0; top:0;" width="1600" height="900">
+    <defs>
+      <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#fff"/>
+      </marker>
+    </defs>
+    <g stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <!-- row 1 -->
+      <line x1="240" y1="233" x2="485" y2="233" marker-end="url(#a)"/>
+      <line x1="630" y1="233" x2="875" y2="233" marker-end="url(#a)"/>
+      <line x1="1020" y1="233" x2="1265" y2="233" marker-end="url(#a)"/>
+      <!-- row 1 to row 2 -->
+      <line x1="1340" y1="345" x2="1340" y2="410" marker-end="url(#a)"/>
+      <!-- row 2 -->
+      <line x1="1270" y1="468" x2="1080" y2="468" marker-end="url(#a)"/>
+      <line x1="592" y1="468" x2="335" y2="468" marker-end="url(#a)"/>
+      <!-- row 2 to row 3 -->
+      <line x1="260" y1="602" x2="260" y2="660" marker-end="url(#a)"/>
+      <!-- row 3 -->
+      <line x1="330" y1="718" x2="575" y2="718" marker-end="url(#a)"/>
+      <line x1="720" y1="718" x2="965" y2="718" marker-end="url(#a)"/>
+      <line x1="1110" y1="718" x2="1325" y2="718" marker-end="url(#a)"/>
+      <!-- results back to the app -->
+      <path d="M1470 718 H1540 V150 H560 V172" stroke-dasharray="7 6" marker-end="url(#a)"/>
+    </g>
+  </svg>
+
+  <div class="label" style="left:362px; top:196px;">Upload PDF / DOCX</div>
+  <div class="label" style="left:752px; top:196px;">POST /api/upload</div>
+  <div class="label" style="left:1142px; top:196px;">Start background job</div>
+  <div class="label" style="left:1400px; top:365px; transform:none;">Document content</div>
+  <div class="label" style="left:1175px; top:440px;">Beats + queries</div>
+  <div class="label" style="left:463px; top:440px;">Audio · clips · photos</div>
+  <div class="label" style="left:280px; top:618px; transform:none;">Voiced scenes</div>
+  <div class="label" style="left:452px; top:681px;">Course content</div>
+  <div class="label" style="left:842px; top:681px;">MP4 + PNG</div>
+  <div class="label" style="left:1218px; top:681px;">status: completed</div>
+  <div class="label" style="left:1310px; top:124px;">GET /api/status → video + infographic URLs</div>
+</div>
+</body>
+</html>

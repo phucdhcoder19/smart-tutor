@@ -9,3 +9,4 @@ backend/video-renderer/node_modules/
 backend/video-renderer/build/
 backend/video-renderer/.bundle-cache/
 *.log
+.claude/
