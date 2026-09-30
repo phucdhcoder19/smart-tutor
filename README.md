@@ -7,7 +7,7 @@ SmartTutor is a mobile app that takes **one document** (PDF, DOCX, TXT or Markdo
 
 It works for any topic (technology, business, science, hobbies…) and any of the supported languages: the course is written and narrated in the language of the uploaded document.
 
-**Demo video:** _link to be added_ · **APK:** _link to be added_ · Test documents and generated examples: [`samples/`](samples/)
+**Demo video:** _link to be added_ · **APK (Android):** [download](https://expo.dev/artifacts/eas/DbO3SDp_J0N8xcTxjnsoOTtxQPTCmKXKMSmsoIhyhEE.apk) · Test documents and generated examples: [`samples/`](samples/)
 
 ---
 
