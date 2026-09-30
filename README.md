@@ -9,6 +9,8 @@ It works for any topic (technology, business, science, hobbies…) and any of th
 
 **Demo video:** _link to be added_ · **APK (Android):** [download](https://expo.dev/artifacts/eas/DbO3SDp_J0N8xcTxjnsoOTtxQPTCmKXKMSmsoIhyhEE.apk) · Test documents and generated examples: [`samples/`](samples/)
 
+> **Backend availability.** To avoid cloud hosting costs, the backend runs on the developer's laptop and is exposed at a fixed public URL (`https://subtentacular-apogamously-tiffany.ngrok-free.dev`) that the APK is built with. **It is online only while the laptop is running it**, so outside those times the app opens but generation fails with *"Cannot reach the server"*. To test the APK, please contact me and I will start the server (`start-backend.bat`) for the agreed time. The demo video shows the full flow in the meantime, and [Running the project](#7-running-the-project) explains how to run everything locally. See [Known limitations](#known-limitations-of-this-version).
+
 ---
 
 ## Contents
@@ -148,6 +150,18 @@ Estimated cost with the default configuration: **about $0.06 per course** (one G
 ---
 
 ## 5. Future improvements
+
+### Known limitations of this version
+
+- **Laptop-hosted backend.** Chosen to keep hosting cost at zero; a server able to render video needs about 2 vCPU / 4 GB RAM. The API is reachable only while the laptop runs it, and a restart of the laptop or network needs `start-backend.bat` to be run again.
+- **Task state lives in memory.** Restarting the server loses the status of running and finished tasks (the files stay in `outputs/`).
+- **No limit on concurrent generations.** Each course starts its own render; several uploads at once slow the laptop down considerably. One upload at a time is recommended.
+- **Generation takes minutes.** About 3–6 minutes per course, mostly video rendering at roughly real time (see *Challenges*).
+- **No accounts or access control.** No login, open CORS, and generated files are never cleaned up automatically.
+- **Free-tier limits.** The ngrok free plan shows a warning page to web browsers (the app sends a header to skip it) and has bandwidth limits; Gemini and Pexels daily quotas apply. When Gemini TTS quota runs out, narration falls back to Edge TTS, where Vietnamese is read by a multilingual voice.
+- **Distribution.** Android gets an APK; iPhone runs the app through Expo Go only. The Dockerfile is provided but has not been validated on a cloud host yet.
+
+### Planned improvements
 
 - **Cloud deployment.** Run the included Dockerfile on a VM with ≥2 vCPU / 4 GB RAM (free tiers with 512 MB cannot run headless Chrome rendering), move tasks from memory to Redis or a database, and store outputs in object storage (S3 / Cloudflare R2) behind a CDN.
 - **A job queue** (Celery/RQ or a managed queue) so several videos can render in parallel on separate workers, with retries.
