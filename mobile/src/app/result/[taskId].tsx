@@ -1,5 +1,7 @@
+import { Feather } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { ComponentProps, ReactNode, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/Button';
@@ -7,7 +9,7 @@ import { Infographic } from '@/components/Infographic';
 import { TrainingVideo } from '@/components/TrainingVideo';
 import { GenerationTask, getTask } from '@/services/api';
 import { downloadAndShare } from '@/services/share';
-import { colors, radius } from '@/theme';
+import { colors, fonts, radius } from '@/theme';
 
 function formatDuration(seconds: number | null) {
   if (!seconds) return '';
@@ -43,43 +45,87 @@ export default function ResultScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <StatusBar style="dark" />
+      <View style={styles.ready}>
+        <Feather name="check-circle" size={16} color={colors.accent} />
+        <Text style={styles.readyText}>Your training is ready</Text>
+      </View>
       <Text style={styles.title}>{task.title}</Text>
       {task.summary && <Text style={styles.summary}>{task.summary}</Text>}
 
-      <View style={styles.section}>
-        <View style={styles.sectionHead}>
-          <Text style={styles.sectionTitle}>🎬 Training video</Text>
-          <Text style={styles.badge}>{formatDuration(task.video_duration)}</Text>
-        </View>
+      <Section icon="film" title="Training video" badge={formatDuration(task.video_duration)}>
         {task.video_url && <TrainingVideo uri={task.video_url} />}
-        <Button title="Save / share video" variant="outline" loading={sharing === 'video'} onPress={() => share('video')} />
-      </View>
+        <Button
+          title="Save or share video"
+          icon="share"
+          variant="outline"
+          loading={sharing === 'video'}
+          onPress={() => share('video')}
+        />
+      </Section>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>🖼️ Infographic</Text>
+      <Section icon="image" title="Infographic">
         {task.infographic_url && <Infographic uri={task.infographic_url} />}
-        <Button title="Save / share infographic" variant="outline" loading={sharing === 'image'} onPress={() => share('image')} />
-      </View>
+        <Button
+          title="Save or share infographic"
+          icon="share"
+          variant="outline"
+          loading={sharing === 'image'}
+          onPress={() => share('image')}
+        />
+      </Section>
 
-      <Button title="Create from another document" onPress={() => router.back()} />
+      <Button title="Create another training" icon="plus" onPress={() => router.back()} />
     </ScrollView>
   );
 }
 
+interface SectionProps {
+  icon: ComponentProps<typeof Feather>['name'];
+  title: string;
+  badge?: string;
+  children: ReactNode;
+}
+
+function Section({ icon, title, badge, children }: SectionProps) {
+  return (
+    <View style={styles.section}>
+      <View style={styles.sectionHead}>
+        <View style={styles.sectionIcon}>
+          <Feather name={icon} size={16} color={colors.ink} />
+        </View>
+        <Text style={styles.sectionTitle}>{title}</Text>
+        {badge ? <Text style={styles.badge}>{badge}</Text> : null}
+      </View>
+      {children}
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: { padding: 20, gap: 20, paddingBottom: 40 },
+  container: { padding: 20, gap: 18, paddingBottom: 48 },
   center: { flex: 1, textAlign: 'center', marginTop: 80, padding: 20 },
-  error: { color: colors.danger },
-  title: { fontSize: 24, fontWeight: '800', color: colors.text, lineHeight: 30 },
-  summary: { fontSize: 15, color: colors.muted, lineHeight: 22 },
+  error: { color: colors.danger, fontFamily: fonts.medium },
+  ready: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  readyText: { fontFamily: fonts.semibold, fontSize: 14, color: colors.accent },
+  title: { marginTop: -6, fontFamily: fonts.extrabold, fontSize: 26, lineHeight: 32, letterSpacing: -0.5, color: colors.ink },
+  summary: { marginTop: -6, fontFamily: fonts.regular, fontSize: 15, lineHeight: 23, color: colors.muted },
   section: { backgroundColor: colors.card, borderRadius: radius, padding: 16, gap: 14 },
-  sectionHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  sectionTitle: { fontSize: 18, fontWeight: '800', color: colors.text },
+  sectionHead: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  sectionIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    backgroundColor: colors.sun,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sectionTitle: { flex: 1, fontFamily: fonts.bold, fontSize: 17, color: colors.ink },
   badge: {
+    fontFamily: fonts.bold,
     fontSize: 13,
-    fontWeight: '700',
     color: colors.primary,
-    backgroundColor: '#e8f0fe',
+    backgroundColor: colors.sky,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 999,

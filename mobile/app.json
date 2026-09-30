@@ -41,11 +41,19 @@
             "usesCleartextTraffic": true
           }
         }
-      ]
+      ],
+      "expo-font",
+      "expo-splash-screen"
     ],
     "scheme": "smarttutor",
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "3cc2d0ac-a652-4986-9a6c-4378f5831a3a"
+      }
     }
   }
 }

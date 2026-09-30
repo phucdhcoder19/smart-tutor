@@ -28,6 +28,26 @@ It works for any topic (technology, business, science, hobbies…) and any of th
 
 ## 1. Architecture overview
 
+### System architecture
+
+![SmartTutor system architecture](docs/system-architecture.png)
+
+| Component | Responsibility | Technology |
+|---|---|---|
+| Mobile app | Pick a document, upload it, show progress, play and share the results. Holds no API keys. | Expo SDK 57, Expo Router, expo-video |
+| Public endpoint | Gives the laptop-hosted backend a fixed HTTPS URL that the APK is built with. | ngrok static domain |
+| API layer | Validates uploads (type, 15 MB), creates a task, returns `202` + `task_id`, reports status, serves output files. | FastAPI, Uvicorn |
+| Task store | Status, progress step and result URLs of each task. | In-memory dict (Redis/DB in production) |
+| Generation pipeline | Runs in the background: document → AI course plan → media in parallel → timeline → renders. | Python, `concurrent.futures` |
+| Video renderer | Turns the timeline into an animated MP4 frame by frame; reports progress as JSON lines. | Node, Remotion 4, FFmpeg (MoviePy fallback) |
+| Infographic renderer | Fills the HTML template and screenshots it as a PNG. | Jinja2, Playwright Chromium |
+| File storage | One folder per task with `video.mp4` and `infographic.png`. | Local disk (S3/R2 in production) |
+| External services | Content writing, narration, footage and photos. All API keys live only in the backend's `.env`. | Gemini, Edge TTS, Pexels |
+
+### Generation pipeline
+
+_Image version: [docs/pipeline.png](docs/pipeline.png)._
+
 ```mermaid
 flowchart TD
     A[Mobile app<br/>Expo / React Native] -- "POST /api/upload" --> B[FastAPI backend]
@@ -120,7 +140,7 @@ Estimated cost with the default configuration: **about $0.06 per course** (one G
 
 **Five-minute guarantee from measured audio.** The prompt caps the narration at about 600 words, but the real limit is enforced after speech synthesis using the actual WAV durations.
 
-**Mobile: Expo + Expo Router.** One TypeScript codebase for Android and iOS, file-based routing, and cloud builds (EAS) that produce an APK without Android Studio. `expo-video` plays the result, `expo-file-system` + `expo-sharing` save or share it.
+**Mobile: Expo + Expo Router.** One TypeScript codebase for Android and iOS, file-based routing, and cloud builds (EAS) that produce an APK without Android Studio. `expo-video` plays the result, `expo-file-system` + `expo-sharing` save or share it. The app uses the same palette and typeface (Plus Jakarta Sans) as the infographic, so the app and what it produces look like one product.
 
 **Backend: FastAPI + a Node renderer.** Python has the best AI/document tooling; Remotion needs Node. The backend launches the renderer as a subprocess and relays its progress (JSON lines on stdout) to the app.
 
@@ -163,7 +183,7 @@ Estimated cost with the default configuration: **about $0.06 per course** (one G
 ```
 SmartTutor/
 ├── mobile/                         Expo SDK 57 app (TypeScript, Expo Router)
-│   ├── src/app/                    Screens: index (upload + progress), result/[taskId]
+│   ├── src/app/                    Screens: index (home), create (upload + progress), result/[taskId]
 │   ├── src/hooks/                  useGenerationTask: upload + polling state machine
 │   ├── src/services/               api.ts (backend client), share.ts (save/share)
 │   ├── src/components/             Button, ProgressCard, TrainingVideo, Infographic
@@ -244,14 +264,14 @@ Scan the QR code with Expo Go. Keep the phone and the computer on the same netwo
 
 ### Android APK
 
-Set the public backend URL, then build in the cloud with EAS:
+Set the public backend URL in `mobile/eas.json` (`build.preview.env.EXPO_PUBLIC_API_URL`; `.env` is git-ignored, so EAS does not upload it), then build in the cloud with EAS:
 
 ```bash
 cd mobile
-# .env
-EXPO_PUBLIC_API_URL=https://your-backend-domain
 npx eas-cli@latest build -p android --profile preview
 ```
+
+The demo backend runs on a laptop behind a static ngrok domain; `start-backend.bat` starts the API and the tunnel together.
 
 EAS returns a download link to the `.apk`.
 

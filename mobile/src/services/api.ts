@@ -17,6 +17,9 @@ function resolveApiUrl(): string {
 
 export const API_URL = resolveApiUrl();
 
+// ngrok's free tier shows a warning page to browser-like clients unless this header is sent.
+const HEADERS = { 'ngrok-skip-browser-warning': '1' };
+
 export type TaskStatus = 'queued' | 'processing' | 'completed' | 'failed';
 
 export interface GenerationTask {
@@ -55,7 +58,7 @@ export async function uploadDocument(doc: PickedDocument): Promise<{ task_id: st
   form.append('file', new File(doc.uri), doc.name);
 
   try {
-    const response = await expoFetch(`${API_URL}/api/upload`, { method: 'POST', body: form });
+    const response = await expoFetch(`${API_URL}/api/upload`, { method: 'POST', body: form, headers: HEADERS });
     return await parse(response as unknown as Response);
   } catch (err) {
     if (err instanceof ApiError) throw err;
@@ -68,7 +71,7 @@ export async function uploadDocument(doc: PickedDocument): Promise<{ task_id: st
 const absolute = (path: string | null) => (path && path.startsWith('/') ? `${API_URL}${path}` : path);
 
 export async function getTask(taskId: string): Promise<GenerationTask> {
-  const response = await fetch(`${API_URL}/api/status/${taskId}`);
+  const response = await fetch(`${API_URL}/api/status/${taskId}`, { headers: HEADERS });
   const task = await parse<GenerationTask>(response);
   return { ...task, video_url: absolute(task.video_url), infographic_url: absolute(task.infographic_url) };
 }

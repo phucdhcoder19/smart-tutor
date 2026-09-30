@@ -1,43 +1,62 @@
+import { Feather } from '@expo/vector-icons';
+import { ComponentProps } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
 
-import { colors, radius } from '@/theme';
+import { colors, fonts, radius } from '@/theme';
+
+type Variant = 'primary' | 'outline' | 'sun';
 
 interface Props {
   title: string;
   onPress: () => void;
-  variant?: 'primary' | 'outline';
+  variant?: Variant;
+  icon?: ComponentProps<typeof Feather>['name'];
   disabled?: boolean;
   loading?: boolean;
 }
 
-export function Button({ title, onPress, variant = 'primary', disabled, loading }: Props) {
-  const outline = variant === 'outline';
+const LABEL_COLOR: Record<Variant, string> = { primary: '#fff', outline: colors.primary, sun: colors.ink };
+
+export function Button({ title, onPress, variant = 'primary', icon, disabled, loading }: Props) {
+  const color = LABEL_COLOR[variant];
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled || loading}
+      accessibilityRole="button"
       style={({ pressed }) => [
         styles.base,
-        outline ? styles.outline : styles.primary,
+        styles[variant],
         (disabled || loading) && styles.disabled,
         pressed && styles.pressed,
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={outline ? colors.primary : '#fff'} />
+        <ActivityIndicator color={color} />
       ) : (
-        <Text style={[styles.label, outline && styles.outlineLabel]}>{title}</Text>
+        <>
+          <Text style={[styles.label, { color }]}>{title}</Text>
+          {icon && <Feather name={icon} size={19} color={color} />}
+        </>
       )}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  base: { height: 52, borderRadius: radius, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20 },
+  base: {
+    height: 56,
+    borderRadius: radius,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    paddingHorizontal: 20,
+  },
   primary: { backgroundColor: colors.primary },
-  outline: { borderWidth: 1.5, borderColor: colors.primary, backgroundColor: 'transparent' },
+  sun: { backgroundColor: colors.sun },
+  outline: { borderWidth: 1.5, borderColor: colors.border, backgroundColor: colors.card },
   disabled: { opacity: 0.5 },
-  pressed: { opacity: 0.8 },
-  label: { color: '#fff', fontSize: 16, fontWeight: '700' },
-  outlineLabel: { color: colors.primary },
+  pressed: { opacity: 0.85, transform: [{ scale: 0.99 }] },
+  label: { fontSize: 16, fontFamily: fonts.bold },
 });
