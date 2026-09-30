@@ -44,26 +44,9 @@ It works for any topic (technology, business, science, hobbies…) and any of th
 | File storage | One folder per task with `video.mp4` and `infographic.png`. | Local disk (S3/R2 in production) |
 | External services | Content writing, narration, footage and photos. All API keys live only in the backend's `.env`. | Gemini, Edge TTS, Pexels |
 
-### Generation pipeline
+### Main flow: generation pipeline
 
-_Image versions: [docs/pipeline.png](docs/pipeline.png) · slide-style [docs/main-flow.png](docs/main-flow.png)._
-
-```mermaid
-flowchart TD
-    A[Mobile app<br/>Expo / React Native] -- "POST /api/upload" --> B[FastAPI backend]
-    A -- "GET /api/status every 3 s" --> B
-    B --> C[1 · Read document<br/>PDF sent natively · DOCX/TXT as text]
-    C --> D[2 · Gemini: one structured call<br/>course plan as JSON]
-    D --> E[3 · Media, in parallel]
-    E --> E1[Narration per beat<br/>Gemini TTS → Edge TTS fallback]
-    E --> E2[Footage per beat<br/>Pexels video · optional Veo]
-    E --> E3[Infographic photos<br/>Pexels photo]
-    E1 & E2 & E3 --> F[4 · Timeline<br/>real audio lengths, 5-minute budget]
-    F --> G[5 · Infographic<br/>Jinja HTML → Playwright PNG]
-    F --> H[6 · Video<br/>Remotion React → MP4<br/>MoviePy fallback]
-    G & H --> I[(outputs/task_id/)]
-    I -- "GET /outputs/…" --> A
-```
+![SmartTutor main flow](docs/main-flow.png)
 
 ### Request flow
 
