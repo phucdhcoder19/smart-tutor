@@ -7,7 +7,7 @@ SmartTutor is a mobile app that takes **one document** (PDF, DOCX, TXT or Markdo
 
 It works for any topic (technology, business, science, hobbies…) and any of the supported languages: the course is written and narrated in the language of the uploaded document.
 
-**Demo video:** _link to be added_ · **APK (Android):** [download](https://expo.dev/artifacts/eas/DbO3SDp_J0N8xcTxjnsoOTtxQPTCmKXKMSmsoIhyhEE.apk) · Test documents and generated examples: [`samples/`](samples/)
+**Demo video:** [watch on Google Drive](https://drive.google.com/file/d/1V61qtdtnkhVXQYMiUKAvyto8urZ1SL8Q/view?usp=sharing) · **APK (Android):** [download](https://expo.dev/artifacts/eas/DbO3SDp_J0N8xcTxjnsoOTtxQPTCmKXKMSmsoIhyhEE.apk) · Test documents and generated examples: [`samples/`](samples/)
 
 > **Backend availability.** To avoid cloud hosting costs, the backend runs on the developer's laptop and is exposed at a fixed public URL (`https://subtentacular-apogamously-tiffany.ngrok-free.dev`) that the APK is built with. **It is online only while the laptop is running it**, so outside those times the app opens but generation fails with *"Cannot reach the server"*. To test the APK, please contact me and I will start the server (`start-backend.bat`) for the agreed time. The demo video shows the full flow in the meantime, and [Running the project](#7-running-the-project) explains how to run everything locally. See [Known limitations](#known-limitations-of-this-version).
 
