@@ -113,7 +113,7 @@ Estimated cost with the default configuration: **about $0.06 per course** (one G
 
 **One AI call writes the whole course.** The video script and the infographic come from the same structured response, so they always agree with each other; it is also cheaper and faster than chaining several prompts. A strict JSON schema (with required fields and an enum of icons) removes parsing errors.
 
-**The AI writes content; code owns the design.** Image models still misspell text and cannot guarantee a consistent layout. So Gemini only produces structured content, and every pixel of text is rendered by templates we control (Remotion for the video, HTML for the infographic). Text is always correct — including Vietnamese diacritics — and every result looks designed, not generated.
+**The AI creates; code renders.** Gemini generates the infographic and the video: it decides what each one says and shows — the key numbers, ideas, steps, quiz, icons, photo and footage searches, and the narration. Image models still misspell text and cannot keep a layout consistent, so instead of asking one to paint the final picture, the AI's output is rendered by templates we control (Remotion for the video, HTML for the infographic). Text is always correct — including Vietnamese diacritics — and every result looks designed, not generated.
 
 **"Beats" synchronise text, voice and footage without speech recognition.** Each scene is split into beats (1–2 sentences + one bullet + one footage query), and each beat is voiced separately. Because we know exactly when each sentence starts, bullets appear when they are spoken, captions change with the voice, and the footage cuts on sentence boundaries. No Whisper/forced alignment is needed.
 

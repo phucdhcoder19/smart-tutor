@@ -11,3 +11,4 @@ backend/video-renderer/.bundle-cache/
 *.log
 .claude/
 ~$*
+presentation-script.md
